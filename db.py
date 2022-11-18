@@ -47,3 +47,13 @@ CREATE TABLE IF NOT EXISTS weather (
 """
 
 execute_query(connection, create_weather_table)
+
+
+def add_weather_in_city_to_db(weather):
+    post_weather = ", ".join(["%s"] * len(weather))
+    insert_query = (
+    f"INSERT INTO weather_table (title, description, user_id) VALUES {post_records}")
+
+connection.autocommit = True
+cursor = connection.cursor()
+# cursor.execute(insert_query, posts)
