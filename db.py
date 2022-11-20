@@ -46,14 +46,32 @@ CREATE TABLE IF NOT EXISTS weather (
 )
 """
 
-execute_query(connection, create_weather_table)
+create_table = execute_query(connection, create_weather_table)
 
 
 def add_weather_in_city_to_db(weather):
     post_weather = ", ".join(["%s"] * len(weather))
     insert_query = (
-    f"INSERT INTO weather_table (title, description, user_id) VALUES {post_records}")
+    f"INSERT INTO weather (city, temp, feels_like, temp_min, temp_max, pressure, humidity) VALUES {post_weather}")
+    connection.autocommit = True
+    cursor = connection.cursor()
+    cursor.execute(insert_query, weather)
 
-connection.autocommit = True
-cursor = connection.cursor()
-# cursor.execute(insert_query, posts)
+# Для проверки данных в БД можно воспользоваться кодом ниже
+
+# def execute_read_query(connection, query):
+#     cursor = connection.cursor()
+#     result = None
+#     try:
+#         cursor.execute(query)
+#         result = cursor.fetchall()
+#         return result
+#     except OperationalError as e:
+#         print(f"The error '{e}' occurred")
+
+
+# select_cities = "SELECT * FROM weather"
+# cities = execute_read_query(connection, select_cities)
+
+# for city in cities:
+#     print(city)
