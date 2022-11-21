@@ -36,7 +36,8 @@ def execute_query(connection, query):
 create_weather_table = """
 CREATE TABLE IF NOT EXISTS weather (
   id SERIAL PRIMARY KEY,
-  city TEXT NOT NULL, 
+  city TEXT NOT NULL,
+  date time with time zone DEFAULT CURRENT_TIME,
   temp DECIMAL,
   feels_like DECIMAL,
   temp_min DECIMAL,
@@ -59,19 +60,22 @@ def add_weather_in_city_to_db(weather):
 
 # Для проверки данных в БД можно воспользоваться кодом ниже
 
-# def execute_read_query(connection, query):
-#     cursor = connection.cursor()
-#     result = None
-#     try:
-#         cursor.execute(query)
-#         result = cursor.fetchall()
-#         return result
-#     except OperationalError as e:
-#         print(f"The error '{e}' occurred")
+def execute_read_query(connection, query):
+    cursor = connection.cursor()
+    result = None
+    try:
+        cursor.execute(query)
+        result = cursor.fetchall()
+        return result
+    except OperationalError as e:
+        print(f"The error '{e}' occurred")
 
 
-# select_cities = "SELECT * FROM weather"
-# cities = execute_read_query(connection, select_cities)
+select_cities = "SELECT * FROM weather"
+cities = execute_read_query(connection, select_cities)
+for city in cities:
+    print(city)
 
-# for city in cities:
-#     print(city)
+# delete_all = "DELETE FROM weather"
+# delete = execute_query(connection, delete_all)
+
